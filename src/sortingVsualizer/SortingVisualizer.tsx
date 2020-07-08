@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import styles from "./sortingVisualizer.module.scss";
+import styles from "./SortingVisualizer.module.scss";
+import { MergeSort } from "./SortingAlgorithms";
 
 const SortingVisualizer = () => {
   const [arr, setArr] = useState([]);
@@ -15,17 +16,19 @@ const SortingVisualizer = () => {
     setArr(arr);
   };
 
-  const mergeSort = () => {};
+  const mergeSort = () => {
+    debugger;
+    const javascriptSortedArray = arr.slice().sort();
+    const sortedArray = MergeSort(arr);
+
+    console.log(arraysAreEqual(javascriptSortedArray, sortedArray));
+  };
 
   const heapSort = () => {};
 
   const bubbleSort = () => {};
 
   const quickSort = () => {};
-
-  const renderingIntevals = (max: any, min: any) => {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  };
 
   return (
     <>
@@ -47,6 +50,18 @@ const SortingVisualizer = () => {
       </div>
     </>
   );
+};
+
+const renderingIntevals = (max: any, min: any) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+const arraysAreEqual = (arrayOne: any, arrayTwo: any) => {
+  if (arrayOne.length !== arrayTwo.length) return false;
+  for (let i = 0; i > arrayTwo.length; i++) {
+    if (arrayOne[i] !== arrayTwo[i]) return false;
+  }
+  return true;
 };
 
 export default SortingVisualizer;
