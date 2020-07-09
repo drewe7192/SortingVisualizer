@@ -19,7 +19,7 @@ export const MergeSort = (array: any[]) => {
   }
 
   while (i < firstHalf.length) sortedArray.push(firstHalf[i++]);
-  while (i < secondHalf.length) sortedArray.push(secondHalf[j++]);
+  while (j < secondHalf.length) sortedArray.push(secondHalf[j++]);
 
   return sortedArray;
 };

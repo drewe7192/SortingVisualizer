@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SortingVisualizer.module.scss";
 import { MergeSort } from "./SortingAlgorithms";
+import { isRegExp } from "util";
 
 const SortingVisualizer = () => {
   const [arr, setArr] = useState([]);
@@ -10,17 +11,14 @@ const SortingVisualizer = () => {
   const resetArray = () => {
     const arr = [] as any;
     for (let i = 0; i < 310; i++) {
-      arr.push(renderingIntevals(5, 610));
+      arr.push(randomIntIntervals(5, 610));
     }
-
     setArr(arr);
   };
 
   const mergeSort = () => {
-    debugger;
-    const javascriptSortedArray = arr.slice().sort();
+    const javascriptSortedArray = arr.slice().sort((a, b) => a - b);
     const sortedArray = MergeSort(arr);
-
     console.log(arraysAreEqual(javascriptSortedArray, sortedArray));
   };
 
@@ -29,6 +27,19 @@ const SortingVisualizer = () => {
   const bubbleSort = () => {};
 
   const quickSort = () => {};
+
+  const testSortingAlgorithms = () => {
+    for (let i = 0; i < 100; i++) {
+      const array = [];
+      const length = randomIntIntervals(1, 1000);
+      for (let i = 0; i < length; i++) {
+        array.push(randomIntIntervals(-1000, 1000));
+      }
+      const javascriptSortedArray = arr.slice().sort((a, b) => a - b);
+      const sortedArray = MergeSort(arr);
+      console.log(arraysAreEqual(javascriptSortedArray, sortedArray));
+    }
+  };
 
   return (
     <>
@@ -46,13 +57,16 @@ const SortingVisualizer = () => {
           <button onClick={() => heapSort()}>HeapSort</button>
           <button onClick={() => bubbleSort()}>BubbleSort</button>
           <button onClick={() => quickSort()}>QuickSort</button>
+          <button onClick={() => testSortingAlgorithms()}>
+            Test SortingAlgorithms Console.log
+          </button>
         </div>
       </div>
     </>
   );
 };
 
-const renderingIntevals = (max: any, min: any) => {
+const randomIntIntervals = (max: any, min: any) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
