@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import styles from "./SortingVisualizer.module.scss";
+import "./SortingVisualizer.css";
 import { MergeSort } from "./SortingAlgorithms";
-import { isRegExp } from "util";
 
 const SortingVisualizer = () => {
   const [arr, setArr] = useState([]);
@@ -17,9 +16,23 @@ const SortingVisualizer = () => {
   };
 
   const mergeSort = () => {
-    const javascriptSortedArray = arr.slice().sort((a, b) => a - b);
-    const sortedArray = MergeSort(arr);
-    console.log(arraysAreEqual(javascriptSortedArray, sortedArray));
+    const animations = MergeSort(arr);
+    for (let i = 0; i < animations.length; i++) {
+      const { comparison, swap } = animations[i];
+      setTimeout(() => {
+        const arrayBars = document.getElementsByClassName(
+          "arrayBar"
+        ) as HTMLCollectionOf<HTMLElement>;
+        debugger;
+        arrayBars[comparison[1]].style.backgroundColor = "red";
+        arrayBars[comparison[0]].style.backgroundColor = "red";
+
+        setTimeout(() => {
+          // arrayBars[comparison[1]].style.backgroundColor = "turquiose";
+          // arrayBars[comparison[0]].style.backgroundColor = "turquiose";
+        }, i + 1 + 10);
+      }, i * 10);
+    }
   };
 
   const heapSort = () => {};
@@ -43,10 +56,10 @@ const SortingVisualizer = () => {
 
   return (
     <>
-      <div className={styles.arrayContainer}>
+      <div className="arrayContainer">
         {arr.map((value, idx) => (
           <div
-            className={styles.arrayBar}
+            className="arrayBar"
             key={idx}
             style={{ height: `${value}px` }}
           ></div>
