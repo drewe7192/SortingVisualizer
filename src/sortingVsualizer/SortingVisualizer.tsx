@@ -9,29 +9,41 @@ const SortingVisualizer = () => {
 
   const resetArray = () => {
     const arr = [] as any;
-    for (let i = 0; i < 310; i++) {
-      arr.push(randomIntIntervals(5, 610));
+    for (let i = 0; i < 100; i++) {
+      arr.push(randomIntIntervals(5, 730));
     }
     setArr(arr);
   };
 
   const mergeSort = () => {
     const animations = MergeSort(arr);
-    for (let i = 0; i < animations.length; i++) {
-      const { comparison, swap } = animations[i];
-      setTimeout(() => {
-        const arrayBars = document.getElementsByClassName(
-          "arrayBar"
-        ) as HTMLCollectionOf<HTMLElement>;
-        debugger;
-        arrayBars[comparison[1]].style.backgroundColor = "red";
-        arrayBars[comparison[0]].style.backgroundColor = "red";
-
+    const newAnimations = [] as any;
+    for (const animation of animations) {
+      newAnimations.push(animation.comparison);
+      newAnimations.push(animation.comparison);
+      newAnimations.push(animation.swap);
+    }
+    for (let i = 0; i < newAnimations.length; i++) {
+      const arrayBars = document.getElementsByClassName(
+        "arrayBar"
+      ) as HTMLCollectionOf<HTMLElement>;
+      const isColorChange = i % 3 !== 2;
+      if (isColorChange) {
+        const [barOneidx, barTwoIdx] = newAnimations[i];
+        const barOneStyle = arrayBars[barOneidx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const color = i % 3 === 0 ? "red" : "turquoise";
         setTimeout(() => {
-          // arrayBars[comparison[1]].style.backgroundColor = "turquiose";
-          // arrayBars[comparison[0]].style.backgroundColor = "turquiose";
-        }, i + 1 + 10);
-      }, i * 10);
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * 10);
+      } else {
+        setTimeout(() => {
+          const [barOneIdx, newHeight] = newAnimations[i];
+          const barOneStyle = arrayBars[barOneIdx].style;
+          barOneStyle.height = `${newHeight}px`;
+        }, i * 10);
+      }
     }
   };
 
