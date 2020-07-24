@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./SortingVisualizer.css";
 import { MergeSort } from "./SortingAlgorithms";
 
+const ANIMATION_SPEED = 1;
+
+const ARRAY_BARS = 310;
+
+const PRIMARY_COLOR = "green";
+
+const SECONDARY_COLOR = "blue";
+
 const SortingVisualizer = () => {
   const [arr, setArr] = useState([]);
 
@@ -9,7 +17,7 @@ const SortingVisualizer = () => {
 
   const resetArray = () => {
     const arr = [] as any;
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < ARRAY_BARS; i++) {
       arr.push(randomIntIntervals(5, 730));
     }
     setArr(arr);
@@ -17,32 +25,26 @@ const SortingVisualizer = () => {
 
   const mergeSort = () => {
     const animations = MergeSort(arr);
-    const newAnimations = [] as any;
-    for (const animation of animations) {
-      newAnimations.push(animation.comparison);
-      newAnimations.push(animation.comparison);
-      newAnimations.push(animation.swap);
-    }
-    for (let i = 0; i < newAnimations.length; i++) {
+    for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName(
         "arrayBar"
       ) as HTMLCollectionOf<HTMLElement>;
       const isColorChange = i % 3 !== 2;
       if (isColorChange) {
-        const [barOneidx, barTwoIdx] = newAnimations[i];
+        const [barOneidx, barTwoIdx] = animations[i];
         const barOneStyle = arrayBars[barOneidx].style;
         const barTwoStyle = arrayBars[barTwoIdx].style;
-        const color = i % 3 === 0 ? "red" : "turquoise";
+        const color = i % 3 === 0 ? PRIMARY_COLOR : SECONDARY_COLOR;
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
           barTwoStyle.backgroundColor = color;
-        }, i * 10);
+        }, i * ANIMATION_SPEED);
       } else {
         setTimeout(() => {
-          const [barOneIdx, newHeight] = newAnimations[i];
+          const [barOneIdx, newHeight] = animations[i];
           const barOneStyle = arrayBars[barOneIdx].style;
           barOneStyle.height = `${newHeight}px`;
-        }, i * 10);
+        }, i * ANIMATION_SPEED);
       }
     }
   };
@@ -61,7 +63,7 @@ const SortingVisualizer = () => {
         array.push(randomIntIntervals(-1000, 1000));
       }
       const javascriptSortedArray = arr.slice().sort((a, b) => a - b);
-      const sortedArray = MergeSort(arr);
+      const sortedArray = MergeSort(arr.slice());
       console.log(arraysAreEqual(javascriptSortedArray, sortedArray));
     }
   };
@@ -73,7 +75,7 @@ const SortingVisualizer = () => {
           <div
             className="arrayBar"
             key={idx}
-            style={{ height: `${value}px` }}
+            style={{ backgroundColor: PRIMARY_COLOR, height: `${value}px` }}
           ></div>
         ))}
         <div style={{ textAlign: "center" }}>
@@ -97,7 +99,7 @@ const randomIntIntervals = (max: any, min: any) => {
 
 const arraysAreEqual = (arrayOne: any, arrayTwo: any) => {
   if (arrayOne.length !== arrayTwo.length) return false;
-  for (let i = 0; i > arrayTwo.length; i++) {
+  for (let i = 0; i < arrayTwo.length; i++) {
     if (arrayOne[i] !== arrayTwo[i]) return false;
   }
   return true;
